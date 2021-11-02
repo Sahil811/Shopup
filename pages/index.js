@@ -1,21 +1,49 @@
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Grid,
+  Typography,
+  Button,
+} from "@material-ui/core";
 import Layout from "../components/Layout.js";
+import data from "../utils/data.js";
 
 export default function Home() {
   return (
     <Layout>
       <div>
         <h1>Products</h1>
-        <ul>
-          <li>
-            <a href="/products/1">Product 1</a>
-          </li>
-          <li>
-            <a href="/products/2">Product 2</a>
-          </li>
-          <li>
-            <a href="/products/3">Product 3</a>
-          </li>
-        </ul>
+        <Grid container spacing={3}>
+          {data.products.map((product) => (
+            <Grid item md={4} key={product.name}>
+              <Card>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    alt={product.name}
+                    image={product.image}
+                    title={product.name}
+                  ></CardMedia>
+
+                  <CardContent>
+                    <Typography>{product.name}</Typography>
+                  </CardContent>
+                </CardActionArea>
+
+                <CardActions>
+                  <Typography>{`$${product.price}`}</Typography>
+
+                  <Button size="small" color="primary">
+                    Add to cart
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       </div>
     </Layout>
   );
