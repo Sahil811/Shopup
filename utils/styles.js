@@ -1,15 +1,26 @@
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
-  main: {
-    minHeight: "80vh",
-  },
   navbar: {
     backgroundColor: "#203040",
     "$ a": {
       color: "#ffffff",
       marginLeft: 10,
     },
+  },
+  brand: {
+    fontWeight: "bold",
+    fontSize: "1.5rem",
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  link: {
+    color: "#ffffff",
+    textDecoration: "none",
+  },
+  main: {
+    minHeight: "80vh",
   },
   footer: {
     textAlign: "center",
