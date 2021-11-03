@@ -10,13 +10,14 @@ import React from "react";
 import useStyles from "../utils/styles.js";
 import NextLink from "next/link";
 
-export default function Layout({ children }) {
+export default function Layout({ title, description, children }) {
   const classes = useStyles();
 
   return (
     <div>
       <Head>
-        <title>shopup</title>
+        <title>{title ? `${title} - Shopup` : "Shopup"}</title>
+        {description && <meta name="description" content={description} />}
       </Head>
 
       <AppBar position="static" className={classes.navbar}>
@@ -27,7 +28,9 @@ export default function Layout({ children }) {
             </Link>
           </NextLink>
 
-          <div className={classes.grow}>
+          <div className={classes.grow}></div>
+
+          <div>
             <NextLink href="/cart" passHref>
               <Link className={classes.link}>Cart</Link>
             </NextLink>
