@@ -3,7 +3,7 @@
 import db from "../../utils/db";
 
 export default async function handler(req, res) {
-  await db.connnect();
-  await db.disconnect();
+  // await db.connnect();
+  // await db.disconnect();
   res.status(200).json({ name: "John Doe" });
 }

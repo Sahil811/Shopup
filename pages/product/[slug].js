@@ -11,15 +11,18 @@ import {
   Button,
 } from "@material-ui/core";
 import Layout from "../../components/Layout";
-import data from "../../utils/data";
+//import data from "../../utils/data";
 import useStyles from "../../utils/styles";
+import db from "../../utils/db";
+import Product from "../../models/product";
 
-export default function ProductScreen() {
+export default function ProductScreen(props) {
+  const { product } = props;
+
   const classes = useStyles();
 
-  const router = useRouter();
-  const { slug } = router.query;
-  const product = data.products.find((p) => p.slug === slug);
+  //const router = useRouter();
+  //const { slug } = router.query;
 
   if (!product) {
     return <h1>Product not found</h1>;
@@ -112,4 +115,17 @@ export default function ProductScreen() {
       </Grid>
     </Layout>
   );
+}
+
+export async function getServerSideProps(context) {
+  const slug = context.params.slug;
+  await db.connect();
+  //The lean option tells Mongoose to skip hydrating the result documents. This makes queries faster and less memory intensive, but the result documents are plain old JavaScript objects (POJOs), not Mongoose documents.
+  const product = await Product.findOne({ slug }).lean();
+  await db.disconnect();
+  return {
+    props: {
+      product: db.convertDocToObject(product),
+    }, // will be passed to the page component as props
+  };
 }
