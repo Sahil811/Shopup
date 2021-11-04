@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const connection = {};
 
-async function connnect() {
+async function connect() {
   if (connection.isConnected) {
     console.log("Mongoose is already connected");
   }
@@ -41,6 +41,6 @@ async function disconnect() {
   }
 }
 
-const db = { connnect, disconnect };
+const db = { connect, disconnect };
 
 export default db;
