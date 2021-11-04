@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   link: {
     color: "#ffffff",
     textDecoration: "none",
-    marginRight: 5,
+    marginRight: 10,
   },
   main: {
     minHeight: "80vh",

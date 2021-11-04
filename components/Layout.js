@@ -8,6 +8,7 @@ import {
   ThemeProvider,
   CssBaseline,
   Switch,
+  Badge,
 } from "@material-ui/core";
 import Head from "next/head";
 import React, { useContext } from "react";
@@ -18,6 +19,8 @@ import Cookies from "js-cookie";
 
 export default function Layout({ title, description, children }) {
   const { state, dispatch } = useContext(Store);
+
+  const { cart } = state;
 
   const { darkMode } = state;
 
@@ -79,7 +82,18 @@ export default function Layout({ title, description, children }) {
               ></Switch>
 
               <NextLink href="/cart" passHref>
-                <Link className={classes.link}>Cart</Link>
+                <Link className={classes.link}>
+                  {cart.cartItems.length > 0 ? (
+                    <Badge
+                      color="secondary"
+                      badgeContent={cart.cartItems.length}
+                    >
+                      Cart
+                    </Badge>
+                  ) : (
+                    "Cart"
+                  )}
+                </Link>
               </NextLink>
 
               <NextLink href="/login" passHref>
