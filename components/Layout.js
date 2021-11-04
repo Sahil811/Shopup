@@ -7,13 +7,20 @@ import {
   createTheme,
   ThemeProvider,
   CssBaseline,
+  Switch,
 } from "@material-ui/core";
 import Head from "next/head";
-import React from "react";
+import React, { useContext } from "react";
 import useStyles from "../utils/styles.js";
 import NextLink from "next/link";
+import { Store } from "../utils/store";
+import Cookies from "js-cookie";
 
 export default function Layout({ title, description, children }) {
+  const { state, dispatch } = useContext(Store);
+
+  const { darkMode } = state;
+
   const theme = createTheme({
     typography: {
       h1: {
@@ -28,7 +35,7 @@ export default function Layout({ title, description, children }) {
       },
     },
     palette: {
-      type: "light",
+      type: darkMode ? "dark" : "light",
       primary: {
         main: "#f0c000",
       },
@@ -39,6 +46,12 @@ export default function Layout({ title, description, children }) {
   });
 
   const classes = useStyles();
+
+  const darkModeToggleHanlder = () => {
+    dispatch({ type: "TOGGLE_DARK_MODE" });
+
+    Cookies.set("darkMode", !darkMode ? "true" : "false");
+  };
 
   return (
     <div>
@@ -60,6 +73,11 @@ export default function Layout({ title, description, children }) {
             <div className={classes.grow}></div>
 
             <div>
+              <Switch
+                checked={darkMode}
+                onChange={() => darkModeToggleHanlder()}
+              ></Switch>
+
               <NextLink href="/cart" passHref>
                 <Link className={classes.link}>Cart</Link>
               </NextLink>
