@@ -67,7 +67,7 @@ export default function Layout({ title, description, children }) {
         <CssBaseline />
         <AppBar position="static" className={classes.navbar}>
           <Toolbar>
-            <NextLink href="" passHref>
+            <NextLink href="/" passHref>
               <Link className={classes.link}>
                 <Typography className={classes.brand}>shopup</Typography>
               </Link>
