@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-//import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import NextLink from "next/link";
 import Image from "next/image";
 import {
@@ -9,6 +9,7 @@ import {
   ListItem,
   Typography,
   Button,
+  Card,
 } from "@material-ui/core";
 import Layout from "../../components/Layout";
 //import data from "../../utils/data";
@@ -24,7 +25,7 @@ export default function ProductScreen(props) {
 
   const classes = useStyles();
 
-  //const router = useRouter();
+  const router = useRouter();
   //const { slug } = router.query;
 
   if (!product) {
@@ -38,6 +39,8 @@ export default function ProductScreen(props) {
       return;
     }
     dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity: 1 } });
+
+    router.push("/cart");
   };
 
   return (
@@ -66,6 +69,7 @@ export default function ProductScreen(props) {
         </Grid>
 
         <Grid item md={3} xs={12}>
+          <Card></Card>
           <List>
             <ListItem>
               <Typography component="h1" variant="h1">
@@ -90,44 +94,46 @@ export default function ProductScreen(props) {
         </Grid>
 
         <Grid item md={3} xs={12}>
-          <List>
-            <ListItem>
-              <Grid container>
-                <Grid item xs={6}>
-                  <Typography>Price</Typography>
-                </Grid>
+          <Card>
+            <List>
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>Price</Typography>
+                  </Grid>
 
-                <Grid item xs={6}>
-                  <Typography>{`$${product.price}`}</Typography>
+                  <Grid item xs={6}>
+                    <Typography>{`$${product.price}`}</Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </ListItem>
+              </ListItem>
 
-            <ListItem>
-              <Grid container>
-                <Grid item xs={6}>
-                  <Typography>Status</Typography>
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>Status</Typography>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <Typography>
+                      {product.countInStock > 0 ? "In stock" : "Unavailable"}
+                    </Typography>
+                  </Grid>
                 </Grid>
+              </ListItem>
 
-                <Grid item xs={6}>
-                  <Typography>
-                    {product.countInStock > 0 ? "In stock" : "Unavailable"}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </ListItem>
-
-            <ListItem>
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={() => addToCartHandler()}
-              >
-                Add to cart
-              </Button>
-            </ListItem>
-          </List>
+              <ListItem>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={() => addToCartHandler()}
+                >
+                  Add to cart
+                </Button>
+              </ListItem>
+            </List>
+          </Card>
         </Grid>
       </Grid>
     </Layout>

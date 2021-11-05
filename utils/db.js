@@ -27,7 +27,7 @@ async function connect() {
 
   console.log("New connection");
 
-  connection.isConnected = mongoose.connection[0].readyState;
+  connection.isConnected = mongoose?.connection[0]?.readyState;
 }
 
 async function disconnect() {
