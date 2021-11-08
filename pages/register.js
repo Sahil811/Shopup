@@ -14,7 +14,7 @@ import axios from "axios";
 import { Store } from "../utils/store";
 import { useRouter } from "next/router";
 
-export default function Login() {
+export default function Register() {
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
 
@@ -26,16 +26,28 @@ export default function Login() {
   }
 
   const emailRef = useRef();
+  const nameRef = useRef();
   const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
 
   const classes = useStyles();
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (!emailRef.current.value || !passwordRef.current.value) {
-      return alert("Missing email or password!");
+    if (
+      !emailRef.current.value ||
+      !passwordRef.current.value ||
+      !confirmPasswordRef.current.value
+    ) {
+      return alert("All fields are required!");
     }
+
+    if (passwordRef.current.value !== confirmPasswordRef.current.value) {
+      return alert("Passwords do not match!");
+    }
+
     try {
-      const { data } = await axios.post("/api/users/login", {
+      const { data } = await axios.post("/api/users/register", {
+        name: nameRef.current.value,
         email: emailRef.current.value,
         password: passwordRef.current.value,
       });
@@ -55,6 +67,17 @@ export default function Login() {
         </Typography>
 
         <List>
+          <ListItem>
+            <TextField
+              id="name"
+              label="Name"
+              fullWidth
+              variant="outlined"
+              inputProps={{ type: "text" }}
+              inputRef={nameRef}
+            />
+          </ListItem>
+
           <ListItem>
             <TextField
               id="email"
@@ -78,15 +101,26 @@ export default function Login() {
           </ListItem>
 
           <ListItem>
+            <TextField
+              id="confirmPassword"
+              label="Confirm Password"
+              fullWidth
+              variant="outlined"
+              inputProps={{ type: "password" }}
+              inputRef={confirmPasswordRef}
+            />
+          </ListItem>
+
+          <ListItem>
             <Button variant="contained" fullWidth color="primary" type="submit">
-              Login
+              Register
             </Button>
           </ListItem>
 
           <ListItem>
-            Don't have an account? &nbsp;
-            <NextLink href={`/register?redirect=${redirect || "/"}`} passHref>
-              <Link>Register</Link>
+            Already have an account? &nbsp;
+            <NextLink href={`/login?redirect=${redirect || "/"}`} passHref>
+              <Link>Login</Link>
             </NextLink>
           </ListItem>
         </List>
