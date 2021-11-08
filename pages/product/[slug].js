@@ -73,7 +73,6 @@ export default function ProductScreen(props) {
         </Grid>
 
         <Grid item md={3} xs={12}>
-          <Card></Card>
           <List>
             <ListItem>
               <Typography component="h1" variant="h1">

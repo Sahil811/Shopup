@@ -6,16 +6,37 @@ import {
   Button,
   Link,
 } from "@material-ui/core";
-import React from "react";
+import React, { useRef } from "react";
 import Layout from "../components/Layout";
 import useStyles from "../utils/styles";
 import NextLink from "next/link";
+import axios from "axios";
 
 export default function Login() {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
   const classes = useStyles();
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    if (!emailRef.current.value || !passwordRef.current.value) {
+      return alert("Missing email or password!");
+    }
+    try {
+      const { data } = await axios.post("/api/users/login", {
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      });
+
+      alert("Success login.");
+    } catch (err) {
+      alert(err.response.data ? err.response.data.message : err.message);
+    }
+  };
+
   return (
     <Layout title="Login">
-      <form className={classes.form}>
+      <form onSubmit={submitHandler} className={classes.form}>
         <Typography component="h1" variant="h1">
           Login
         </Typography>
@@ -28,6 +49,7 @@ export default function Login() {
               fullWidth
               variant="outlined"
               inputProps={{ type: "email" }}
+              inputRef={emailRef}
             />
           </ListItem>
 
@@ -38,6 +60,7 @@ export default function Login() {
               fullWidth
               variant="outlined"
               inputProps={{ type: "password" }}
+              inputRef={passwordRef}
             />
           </ListItem>
 
