@@ -6,13 +6,26 @@ import {
   Button,
   Link,
 } from "@material-ui/core";
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import Layout from "../components/Layout";
 import useStyles from "../utils/styles";
 import NextLink from "next/link";
 import axios from "axios";
+import { Store } from "../utils/store";
+import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 export default function Login() {
+  const { state, dispatch } = useContext(Store);
+  const { userInfo } = state;
+
+  const router = useRouter();
+  const { redirect } = router.query; // login?redirect=/shipping
+
+  if (userInfo) {
+    router.push(redirect || "/");
+  }
+
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -28,7 +41,8 @@ export default function Login() {
         password: passwordRef.current.value,
       });
 
-      alert("Success login.");
+      dispatch({ type: "USER_LOGIN", payload: data });
+      router.push(redirect || "/");
     } catch (err) {
       alert(err.response.data ? err.response.data.message : err.message);
     }
