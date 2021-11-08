@@ -32,7 +32,7 @@ handler.post(async (req, res) => {
       },
     });
   } else {
-    res.status(401).send({ message: "Invalid user or password" });
+    res.status(401).send({ message: "Invalid email or password" });
   }
 });
 

@@ -8,6 +8,16 @@ const handler = nc();
 
 handler.post(async (req, res) => {
   await db.connect();
+
+  const userExist = await User.findOne({ email: req.body.email });
+
+  if (userExist) {
+    res.status(400).json({
+      message: "Email already exist.",
+    });
+    return;
+  }
+
   const newUser = new User({
     name: req.body.name,
     email: req.body.email,
