@@ -10,6 +10,10 @@ const initialState = {
     cartItems: Cookies.get("cartItems")
       ? JSON.parse(Cookies.get("cartItems"))
       : [],
+
+    shippingAddress: Cookies.get("shippingAddress")
+      ? JSON.parse(Cookies.get("shippingAddress"))
+      : {},
   },
 
   userInfo: Cookies.get("userInfo")
@@ -25,6 +29,7 @@ export function StoreProvider(props) {
           ...state,
           darkMode: !state.darkMode,
         };
+
       case "CART_ADD_ITEM": {
         const newItem = action.payload;
         const existItem = state.cart.cartItems.find(
@@ -38,6 +43,7 @@ export function StoreProvider(props) {
         Cookies.set("cartItems", JSON.stringify(cartItems));
         return { ...state, cart: { ...state.cart, cartItems } };
       }
+
       case "CART_REMOVE_ITEM": {
         const cartItems = state.cart.cartItems.filter(
           (item) => item._id !== action.payload._id
@@ -45,6 +51,7 @@ export function StoreProvider(props) {
         Cookies.set("cartItems", JSON.stringify(cartItems));
         return { ...state, cart: { ...state.cart, cartItems } };
       }
+
       case "USER_LOGIN":
         Cookies.set("userInfo", JSON.stringify(action.payload));
         return { ...state, userInfo: action.payload };
@@ -53,6 +60,14 @@ export function StoreProvider(props) {
         Cookies.remove("userInfo");
         Cookies.remove("cartItems");
         return { ...state, userInfo: null, cart: { cartItems: [] } };
+
+      case "SAVE_SHIPPING_ADDRESS":
+        Cookies.set("shippingAddress", JSON.stringify(action.payload));
+        return {
+          ...state,
+          cart: { ...state.cart, shippingAddress: action.payload },
+        };
+
       default:
         return state;
     }
