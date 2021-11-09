@@ -63,7 +63,11 @@ export function StoreProvider(props) {
       case "USER_LOGOUT":
         Cookies.remove("userInfo");
         Cookies.remove("cartItems");
-        return { ...state, userInfo: null, cart: { cartItems: [] } };
+        return {
+          ...state,
+          userInfo: null,
+          cart: { cartItems: [], shippingAddress: {}, paymentMethod: "" },
+        };
 
       case "SAVE_SHIPPING_ADDRESS":
         Cookies.set("shippingAddress", JSON.stringify(action.payload));
@@ -77,6 +81,13 @@ export function StoreProvider(props) {
         return {
           ...state,
           cart: { ...state.cart, paymentMethod: action.payload },
+        };
+
+      case "CART_CLEAR":
+        Cookies.remove("cartItems");
+        return {
+          ...state,
+          cart: { ...state.cart, cartItems: [] },
         };
 
       default:
