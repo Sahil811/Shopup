@@ -14,6 +14,10 @@ const initialState = {
     shippingAddress: Cookies.get("shippingAddress")
       ? JSON.parse(Cookies.get("shippingAddress"))
       : {},
+
+    paymentMethod: Cookies.get("paymentMethod")
+      ? JSON.parse(Cookies.get("paymentMethod"))
+      : null,
   },
 
   userInfo: Cookies.get("userInfo")
@@ -66,6 +70,13 @@ export function StoreProvider(props) {
         return {
           ...state,
           cart: { ...state.cart, shippingAddress: action.payload },
+        };
+
+      case "SAVE_PAYMENT_METHOD":
+        Cookies.set("paymentMethod", JSON.stringify(action.payload));
+        return {
+          ...state,
+          cart: { ...state.cart, paymentMethod: action.payload },
         };
 
       default:
