@@ -31,7 +31,7 @@ export default function Payment() {
     if (!shippingAddress.address) {
       router.push("/shipping");
     } else {
-      setPaymentMethod(JSON.parse(Cookies.get("paymentMethod")) || "");
+      setPaymentMethod(Cookies.get("paymentMethod") || "");
     }
   }, []);
 
