@@ -20,7 +20,7 @@ import { Store } from "../utils/store";
 import { Controller, useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
 
-function Profile() {
+const Profile = () => {
   const { state, dispatch } = useContext(Store);
 
   const {
@@ -236,6 +236,6 @@ function Profile() {
       </Grid>
     </Layout>
   );
-}
+};
 
 export default dynamic(() => Promise.resolve(Profile), { ssr: false });
