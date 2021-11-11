@@ -13,8 +13,9 @@ import NextLink from "next/link";
 import axios from "axios";
 import { Store } from "../utils/store";
 import { useRouter } from "next/router";
-import { Controller, useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
+import { getError } from "../utils/error";
+import { Controller, useForm } from "react-hook-form";
 
 export default function Login() {
   const {
@@ -46,10 +47,7 @@ export default function Login() {
       dispatch({ type: "USER_LOGIN", payload: data });
       router.push(redirect || "/");
     } catch (err) {
-      enqueueSnackbar(
-        err.response.data ? err.response.data.message : err.message,
-        { variant: "error" }
-      );
+      enqueueSnackbar(getError(err), { variant: "error" });
     }
   };
 

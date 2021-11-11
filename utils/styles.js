@@ -33,6 +33,7 @@ const useStyles = makeStyles({
   },
   form: {
     maxWidth: 800,
+    width: "100%",
     margin: "0 auto",
   },
   navbarButton: {
