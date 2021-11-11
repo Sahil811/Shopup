@@ -14,7 +14,7 @@ const handler = nc({
 
 handler.get(async (req, res) => {
   await db.connect();
-  const products = await Product.find({});
+  const products = await Product.find({}).sort({ createdAt: -1 });
   await db.disconnect();
   res.send(products);
 });
