@@ -77,11 +77,13 @@ function AdminDashboard() {
                   <ListItemText primary="Admin Dashboard"></ListItemText>
                 </ListItem>
               </NextLink>
+
               <NextLink href="/admin/orders" passHref>
                 <ListItem button component="a">
                   <ListItemText primary="Orders"></ListItemText>
                 </ListItem>
               </NextLink>
+
               <NextLink href="/admin/products" passHref>
                 <ListItem selected button component="a">
                   <ListItemText primary="Products"></ListItemText>
@@ -137,7 +139,8 @@ function AdminDashboard() {
                                 <Button size="small" variant="contained">
                                   Edit
                                 </Button>
-                              </NextLink>{" "}
+                              </NextLink>
+                              &nbsp;&nbsp;
                               <Button size="small" variant="contained">
                                 Delete
                               </Button>
