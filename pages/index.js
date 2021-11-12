@@ -46,11 +46,12 @@ export default function Home(props) {
         <h1>Products</h1>
         <Grid container spacing={3}>
           {products.map((product) => (
-            <Grid item md={4} key={product.name}>
+            <Grid item md={4} key={product.name} style={{ display: "grid" }}>
               <Card>
                 <NextLink href={`/product/${product.slug}`} passHref>
-                  <CardActionArea>
+                  <CardActionArea style={{ height: "90% !important" }}>
                     <CardMedia
+                      style={{ height: "90% !important" }}
                       component="img"
                       alt={product.name}
                       image={product.image}
