@@ -11,7 +11,7 @@ handler.use(isAuth, isAdmin);
 
 handler.get(async (req, res) => {
   await db.connect();
-  const users = await User.find({ isAdmin: false });
+  const users = await User.find({ email: { $ne: "admin@example.com" } });
   await db.disconnect();
   res.send(users);
 });
