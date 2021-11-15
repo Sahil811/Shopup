@@ -17,9 +17,9 @@ handler.get(async (req, res) => {
   const product = await Product.findById(req.query.id);
   db.disconnect();
   if (product) {
-    res.send(product.reviews);
+    return res.send(product.reviews);
   } else {
-    res.status(404).send({ message: "Product not found" });
+    return res.status(404).send({ message: "Product not found" });
   }
 });
 
@@ -66,13 +66,13 @@ handler.post(async (req, res) => {
         product.reviews.length;
       await product.save();
       await db.disconnect();
-      res.status(201).send({
+      return res.status(201).send({
         message: "Review submitted",
       });
     }
   } else {
     await db.disconnect();
-    res.status(404).send({ message: "Product Not Found" });
+    return res.status(404).send({ message: "Product Not Found" });
   }
 });
 
