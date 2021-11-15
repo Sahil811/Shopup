@@ -17,6 +17,7 @@ import axios from "axios";
 import { Store } from "../utils/store";
 import { useContext } from "react";
 import { useRouter } from "next/router";
+import Rating from "@material-ui/lab/Rating";
 
 export default function Home(props) {
   const { products } = props;
@@ -60,6 +61,7 @@ export default function Home(props) {
 
                     <CardContent>
                       <Typography>{product.name}</Typography>
+                      <Rating value={product.rating} readOnly></Rating>
                     </CardContent>
                   </CardActionArea>
                 </NextLink>
@@ -87,7 +89,7 @@ export default function Home(props) {
 export async function getServerSideProps(context) {
   await db.connect();
   //The lean option tells Mongoose to skip hydrating the result documents. This makes queries faster and less memory intensive, but the result documents are plain old JavaScript objects (POJOs), not Mongoose documents.
-  const products = await Product.find({}).lean();
+  const products = await Product.find({}, "-reviews").lean(); // Remove "reviews" from the result
   await db.disconnect();
   return {
     props: {
