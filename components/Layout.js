@@ -180,6 +180,7 @@ export default function Layout({ title, description, children }) {
                 </ListItem>
 
                 <Divider light />
+
                 {categories.map((category) => (
                   <NextLink
                     key={category}

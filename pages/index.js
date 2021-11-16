@@ -1,23 +1,12 @@
-import {
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-  Button,
-} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Layout from "../components/Layout.js";
-//import data from "../utils/data.js";
-import NextLink from "next/link";
 import db from "../utils/db.js";
 import Product from "../models/product.js";
 import axios from "axios";
 import { Store } from "../utils/store";
 import { useContext } from "react";
 import { useRouter } from "next/router";
-import Rating from "@material-ui/lab/Rating";
+import ProductItem from "../components/ProductItem";
 
 export default function Home(props) {
   const { products } = props;
@@ -48,36 +37,10 @@ export default function Home(props) {
         <Grid container spacing={3}>
           {products.map((product) => (
             <Grid item md={4} key={product.name} style={{ display: "grid" }}>
-              <Card>
-                <NextLink href={`/product/${product.slug}`} passHref>
-                  <CardActionArea style={{ height: "90% !important" }}>
-                    <CardMedia
-                      style={{ height: "90% !important" }}
-                      component="img"
-                      alt={product.name}
-                      image={product.image}
-                      title={product.name}
-                    ></CardMedia>
-
-                    <CardContent>
-                      <Typography>{product.name}</Typography>
-                      <Rating value={product.rating} readOnly></Rating>
-                    </CardContent>
-                  </CardActionArea>
-                </NextLink>
-
-                <CardActions>
-                  <Typography>{`$${product.price}`}</Typography>
-
-                  <Button
-                    size="small"
-                    color="primary"
-                    onClick={() => addToCartHandler(product)}
-                  >
-                    Add to cart
-                  </Button>
-                </CardActions>
-              </Card>
+              <ProductItem
+                product={product}
+                addToCartHandler={addToCartHandler}
+              />
             </Grid>
           ))}
         </Grid>
