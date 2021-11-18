@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 auto",
   },
   navbarButton: {
-    color: "#ffffff",
+    color: "#fff",
     textTransform: "initial",
   },
   transparentBackgroud: {
@@ -92,6 +92,10 @@ const useStyles = makeStyles((theme) => ({
   mt1: { marginTop: "1rem" },
   sort: {
     marginRight: 5,
+  },
+  featuredImage: {
+    width: "100%",
+    height: "45vh",
   },
 }));
 

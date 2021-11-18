@@ -18,24 +18,41 @@ handler.get(async (req, res) => {
 /// EDIT PRODUCT ///
 
 handler.put(async (req, res) => {
-  await db.connect();
-  const product = await Product.findById(req.query.id);
-  if (product) {
-    product.name = req.body.name;
-    product.slug = req.body.slug;
-    product.price = req.body.price;
-    product.category = req.body.category;
-    product.image = req.body.image;
-    product.brand = req.body.brand;
-    product.countInStock = req.body.countInStock;
-    product.description = req.body.description;
-    await product.save();
-    await db.disconnect();
-    res.send({ message: "Product Updated Successfully" });
-  } else {
-    await db.disconnect();
-    res.status(404).send({ message: "Product Not Found" });
-  }
+  new Promise(async (resolve, reject) => {
+    try {
+      await db.connect();
+
+      const product = await Product.findOneAndUpdate(
+        { _id: req.query.id },
+        {
+          $set: {
+            name: req.body.name,
+            slug: req.body.slug,
+            price: req.body.price,
+            category: req.body.category,
+            image: req.body.image,
+            brand: req.body.brand,
+            countInStock: req.body.countInStock,
+            description: req.body.description,
+            featuredImage: req.body.featuredImage,
+            isFeatured: req.body.isFeatured,
+          },
+        },
+        { new: true }
+      );
+
+      if (product) {
+        await db.disconnect();
+        return resolve(res.send({ message: "Product Updated Successfully" }));
+      } else {
+        await db.disconnect();
+        return reject(res.status(404).send({ message: "Product Not Found" }));
+      }
+    } catch (error) {
+      console.log(error);
+      return reject(res.status(404).send({ message: error }));
+    }
+  });
 });
 
 /// DELETE PRODUCT ///
