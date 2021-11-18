@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme) => ({
   navbar: {
     backgroundColor: "#203040",
     "$ a": {
-      color: "#ffffff",
+      color: "#fff",
       marginLeft: 10,
     },
   },
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   link: {
-    color: "#ffffff",
+    color: "#fff",
     textDecoration: "none",
     marginRight: 10,
   },
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 auto",
   },
   navbarButton: {
-    color: "#ffffff",
+    color: "#fff",
     textTransform: "initial",
   },
   transparentBackgroud: {
@@ -70,13 +70,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   searchForm: {
-    border: "1px solid #ffffff",
-    backgroundColor: "#ffffff",
+    border: "1px solid #fff",
+    backgroundColor: "#fff",
     borderRadius: 5,
   },
   searchInput: {
     paddingLeft: 5,
-    color: "#000000",
+    color: "#000",
     "& ::placeholder": {
       color: "#606060",
     },
@@ -86,7 +86,28 @@ const useStyles = makeStyles((theme) => ({
     padding: 5,
     borderRadius: "0 5px 5px 0",
     "& span": {
-      color: "#000000",
+      color: "#000",
+    },
+  },
+  mt1: { marginTop: "1rem" },
+  sort: {
+    marginRight: 5,
+  },
+  featuredImage: {
+    width: "100%",
+    height: "45vh",
+  },
+  fullContainer: { height: "100vh" },
+  mapInputBox: {
+    position: "absolute",
+    display: "flex",
+    left: 0,
+    right: 0,
+    margin: "10px auto",
+    width: 300,
+    height: 40,
+    "& input": {
+      width: 250,
     },
   },
   mt1: { marginTop: "1rem" },

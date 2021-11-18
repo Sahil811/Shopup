@@ -249,6 +249,9 @@ export default function Search(props) {
 
 export async function getServerSideProps({ query }) {
   await db.connect();
+
+  // Getting query params from url and using them to filter products
+
   const pageSize = query.pageSize || PAGE_SIZE;
   const page = query.page || 1;
   const category = query.category || "";
@@ -307,6 +310,8 @@ export async function getServerSideProps({ query }) {
 
   const categories = await Product.find().distinct("category");
   const brands = await Product.find().distinct("brand");
+
+  // Getting product from database
   const productDocs = await Product.find(
     {
       ...queryFilter,
@@ -330,7 +335,12 @@ export async function getServerSideProps({ query }) {
     ...ratingFilter,
   });
 
+  // disconnecting from database
+
   await db.disconnect();
+
+  // Coverting Date to string using db.coverDocToObject
+  // Reason: `object` ("[object Object]") cannot be serialized as JSON. We can only return JSON serializable data types.
 
   const products = productDocs.map(db.convertDocToObject);
 

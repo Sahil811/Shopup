@@ -7,16 +7,33 @@ import {
   CardMedia,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import NextLink from "next/link";
 import Rating from "@material-ui/lab/Rating";
 
 export default function ProductItem({ product, addToCartHandler }) {
+  useEffect(() => {
+    const cardActionArea = document.getElementById("cardActionArea");
+    const cardMedia = document.getElementById("cardMedia");
+
+    if (cardActionArea) {
+      cardActionArea.style.height = "90% !important";
+    }
+    if (cardMedia) {
+      cardMedia.style.height = "90% !important";
+    }
+  }, []);
+
   return (
     <Card>
       <NextLink href={`/product/${product.slug}`} passHref>
-        <CardActionArea>
+        <CardActionArea
+          id="cardActionArea"
+          style={{ height: "90% !important" }}
+        >
           <CardMedia
+            id="cardMedia"
+            style={{ height: "90% !important" }}
             component="img"
             image={product.image}
             title={product.name}
