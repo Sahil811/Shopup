@@ -110,6 +110,10 @@ const useStyles = makeStyles((theme) => ({
       width: 250,
     },
   },
+  mt1: { marginTop: "1rem" },
+  sort: {
+    marginRight: 5,
+  },
 }));
 
 export default useStyles;
