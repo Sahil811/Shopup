@@ -13,7 +13,7 @@ const initialState = {
 
     shippingAddress: Cookies.get("shippingAddress")
       ? JSON.parse(Cookies.get("shippingAddress"))
-      : {},
+      : { location: {} },
 
     paymentMethod: Cookies.get("paymentMethod")
       ? JSON.parse(Cookies.get("paymentMethod"))
@@ -63,17 +63,41 @@ export function StoreProvider(props) {
       case "USER_LOGOUT":
         Cookies.remove("userInfo");
         Cookies.remove("cartItems");
+        Cookies.remove("shippinhAddress");
+        Cookies.remove("paymentMethod");
         return {
           ...state,
           userInfo: null,
-          cart: { cartItems: [], shippingAddress: {}, paymentMethod: "" },
+          cart: {
+            cartItems: [],
+            shippingAddress: { location: {} },
+            paymentMethod: "",
+          },
         };
 
       case "SAVE_SHIPPING_ADDRESS":
         Cookies.set("shippingAddress", JSON.stringify(action.payload));
         return {
           ...state,
-          cart: { ...state.cart, shippingAddress: action.payload },
+          cart: {
+            ...state.cart,
+            shippingAddress: {
+              ...state.cart.shippingAddress,
+              ...action.payload,
+            },
+          },
+        };
+
+      case "SAVE_SHIPPING_ADDRESS_MAP_LOCATION":
+        return {
+          ...state,
+          cart: {
+            ...state.cart,
+            shippingAddress: {
+              ...state.cart.shippingAddress,
+              location: action.payload,
+            },
+          },
         };
 
       case "SAVE_PAYMENT_METHOD":
