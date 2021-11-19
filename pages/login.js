@@ -10,23 +10,30 @@ import React, { useContext } from "react";
 import Layout from "../components/Layout";
 import useStyles from "../utils/styles";
 import NextLink from "next/link";
-import axios from "axios";
-import { Store } from "../utils/store";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { getError } from "../utils/error";
 import { Controller, useForm } from "react-hook-form";
+// import axios from "axios";
+// import { Store } from "../utils/store";
+
+/// Redux Toolkit ///
+import { useSelector, useDispatch } from "react-redux";
+import { userLogin } from "../redux/slices/user";
 
 export default function Login() {
+  const userInfo = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
+
+  //const { state, dispatch } = useContext(Store);
+  //const { userInfo } = state;
+
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
-  const { state, dispatch } = useContext(Store);
-  const { userInfo } = state;
 
   const router = useRouter();
   const { redirect } = router.query; // login?redirect=/shipping
@@ -39,12 +46,13 @@ export default function Login() {
   const submitHandler = async ({ email, password }) => {
     closeSnackbar();
     try {
-      const { data } = await axios.post("/api/users/login", {
-        email,
-        password,
-      });
+      // const { data } = await axios.post("/api/users/login", {
+      //   email,
+      //   password,
+      // });
+      // dispatch({ type: "USER_LOGIN", payload: data });
 
-      dispatch({ type: "USER_LOGIN", payload: data });
+      dispatch(userLogin({ email, password }));
       router.push(redirect || "/");
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: "error" });

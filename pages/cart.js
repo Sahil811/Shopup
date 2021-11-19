@@ -15,21 +15,31 @@ import {
   List,
   ListItem,
 } from "@material-ui/core";
-import React, { useContext } from "react";
+import React from "react";
 import Layout from "../components/Layout";
-import { Store } from "../utils/store";
 import NextLink from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import { useRouter } from "next/router";
+import {
+  addCartActionCreator,
+  removeCartActionCreator,
+} from "../redux/slices/cart";
+import { useSelector, useDispatch } from "react-redux";
+// import { Store } from "../utils/store";
+// import React, { useContext } from "react";
 
 function CartScreen() {
   const router = useRouter();
-  const { state, dispatch } = useContext(Store);
-  const {
-    cart: { cartItems },
-  } = state;
+
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const dispatch = useDispatch();
+
+  // const { state, dispatch } = useContext(Store);
+  // const {
+  //   cart: { cartItems },
+  // } = state;
 
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
@@ -37,11 +47,13 @@ function CartScreen() {
       window.alert("Sorry. Product is out of stock");
       return;
     }
-    dispatch({ type: "CART_ADD_ITEM", payload: { ...item, quantity } });
+    // dispatch({ type: "CART_ADD_ITEM", payload: { ...item, quantity } });
+    dispatch(addCartActionCreator({ ...item, quantity }));
   };
 
   const removeItemHandler = (item) => {
-    dispatch({ type: "CART_REMOVE_ITEM", payload: item });
+    // dispatch({ type: "CART_REMOVE_ITEM", payload: item });
+    dispatch(removeCartActionCreator(item));
   };
 
   const checkoutHandler = () => {

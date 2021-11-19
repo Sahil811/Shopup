@@ -10,16 +10,19 @@ import {
 } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React from "react";
 import Layout from "../components/Layout";
 import db from "../utils/db";
 import Product from "../models/product";
 import useStyles from "../utils/styles";
 import ProductItem from "../components/ProductItem";
-import { Store } from "../utils/store";
 import axios from "axios";
 import Rating from "@material-ui/lab/Rating";
 import { Pagination } from "@material-ui/lab";
+import { useSelector, useDispatch } from "react-redux";
+import { addCartActionCreator } from "../redux/slices/cart";
+// import { Store } from "../utils/store";
+// import React, { useContext } from "react";
 
 const PAGE_SIZE = 3;
 
@@ -111,7 +114,10 @@ export default function Search(props) {
     filterSearch({ rating: e.target.value });
   };
 
-  const { state, dispatch } = useContext(Store);
+  // const { state, dispatch } = useContext(Store);
+
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
 
   const addToCartHandler = async (product) => {
     const existItem = state.cart.cartItems.find((x) => x._id === product._id);
@@ -121,7 +127,8 @@ export default function Search(props) {
       window.alert("Sorry. Product is out of stock");
       return;
     }
-    dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
+    // dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
+    dispatch(addCartActionCreator({ ...product, quantity }));
     router.push("/cart");
   };
 

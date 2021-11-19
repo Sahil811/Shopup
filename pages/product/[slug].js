@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 import Image from "next/image";
@@ -15,18 +15,25 @@ import {
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import Layout from "../../components/Layout";
-//import data from "../../utils/data";
 import useStyles from "../../utils/styles";
 import db from "../../utils/db";
 import Product from "../../models/product";
 import axios from "axios";
-import { Store } from "../../utils/store";
 import { getError } from "../../utils/error";
 import { useSnackbar } from "notistack";
+import { addCartActionCreator } from "../redux/slices/cart";
+import { useSelector, useDispatch } from "react-redux";
+// import React, { useContext, useEffect, useState } from "react";
+// import { Store } from "../../utils/store";
+//import data from "../../utils/data";
 
 export default function ProductScreen(props) {
-  const { state, dispatch } = useContext(Store);
-  const { userInfo } = state;
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+
+  // const { state, dispatch } = useContext(Store);
+  // const { userInfo } = state;
+
   const { product } = props;
 
   const classes = useStyles();
@@ -90,8 +97,8 @@ export default function ProductScreen(props) {
       return;
     }
 
-    dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
-
+    // dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
+    dispatch(addCartActionCreator({ ...product, quantity }));
     router.push("/cart");
   };
 

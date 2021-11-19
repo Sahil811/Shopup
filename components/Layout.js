@@ -22,26 +22,35 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import CancelIcon from "@material-ui/icons/Cancel";
 import Head from "next/head";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import { useEffect } from "react";
 import useStyles from "../utils/styles.js";
 import NextLink from "next/link";
-import { Store } from "../utils/store";
-import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import SearchIcon from "@material-ui/icons/Search";
 import { getError } from "../utils/error";
+import { themeToggleActionCreator } from "../redux/slices/themeToggle";
+import { logoutActionCreator } from "../redux/slices/user";
+// import React, { useContext, useState } from "react";
+// import { Store } from "../utils/store";
+
+/// Redux Toolkit ///
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Layout({ title, description, children }) {
-  const { state, dispatch } = useContext(Store);
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.userInfo);
+  const darkMode = useSelector((state) => state.darkMode);
+  const cart = useSelector((state) => state.cart);
+
+  //const { state, dispatch } = useContext(Store);
+  // const { darkMode, cart, userInfo } = state;
 
   const router = useRouter();
-
-  const { darkMode, cart, userInfo } = state;
 
   const theme = createTheme({
     typography: {
@@ -105,9 +114,9 @@ export default function Layout({ title, description, children }) {
   }, []);
 
   const darkModeToggleHanlder = () => {
-    dispatch({ type: "TOGGLE_DARK_MODE" });
-
-    Cookies.set("darkMode", !darkMode ? "true" : "false");
+    // dispatch({ type: "TOGGLE_DARK_MODE" });
+    // Cookies.set("darkMode", !darkMode ? "true" : "false");
+    dispatch(themeToggleActionCreator());
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -126,7 +135,8 @@ export default function Layout({ title, description, children }) {
 
   const logoutClickHandler = () => {
     setAnchorEl(null);
-    dispatch({ type: "USER_LOGOUT" });
+    //dispatch({ type: "USER_LOGOUT" });
+    dispatch(logoutActionCreator());
     router.push("/");
   };
 
@@ -248,7 +258,7 @@ export default function Layout({ title, description, children }) {
                     onClick={loginClickHandler}
                     className={classes.navbarButton}
                   >
-                    {userInfo.user.name}
+                    {userInfo?.user?.name}
                   </Button>
                   <Menu
                     id="simple-menu"
@@ -271,7 +281,7 @@ export default function Layout({ title, description, children }) {
                       Order Hisotry
                     </MenuItem>
 
-                    {userInfo.user.isAdmin && (
+                    {userInfo?.user?.isAdmin && (
                       <MenuItem
                         onClick={(e) =>
                           loginMenuCloseHandler(e, "/admin/dashboard")
