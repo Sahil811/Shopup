@@ -31,7 +31,7 @@ export const cartSlice = createSlice({
           : [...state.cartItems, newItem];
 
         Cookies.set("cartItems", JSON.stringify(cartItems));
-        return { ...state, cartItems };
+        state.cartItems = cartItems;
       },
     },
 
@@ -41,14 +41,34 @@ export const cartSlice = createSlice({
           (item) => item._id !== action.payload._id
         );
         Cookies.set("cartItems", JSON.stringify(cartItems));
-        return { ...state, cartItems };
+        state.cartItems = cartItems;
       },
     },
 
     clear: {
       reducer: (state, action) => {
         Cookies.remove("cartItems");
-        return { ...state, cartItems: [] };
+        state.cartItems = [];
+      },
+    },
+
+    location: {
+      reducer: (state, action) => {
+        Cookies.set("shippingAddress", JSON.stringify(action.payload));
+        state.shippingAddress = action.payload;
+      },
+    },
+
+    mapLocation: {
+      reducer: (state, action) => {
+        state.shippingAddress.location = action.payload;
+      },
+    },
+
+    paymentMethod: {
+      reducer: (state, action) => {
+        Cookies.set("paymentMethod", JSON.stringify(action.payload));
+        state.paymentMethod = action.payload;
       },
     },
   },
@@ -58,6 +78,9 @@ export const {
   add: addCartActionCreator,
   remove: removeCartActionCreator,
   clear: clearCartActionCreator,
+  location: locationActionCreator,
+  mapLocation: mapLocationActionCreator,
+  paymentMethod: paymentMethodActionCreator,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

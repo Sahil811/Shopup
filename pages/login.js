@@ -6,7 +6,7 @@ import {
   Button,
   Link,
 } from "@material-ui/core";
-import React, { useContext } from "react";
+import React from "react";
 import Layout from "../components/Layout";
 import useStyles from "../utils/styles";
 import NextLink from "next/link";
@@ -16,15 +16,15 @@ import { getError } from "../utils/error";
 import { Controller, useForm } from "react-hook-form";
 // import axios from "axios";
 // import { Store } from "../utils/store";
+// import React, { useContext } from "react";
 
 /// Redux Toolkit ///
 import { useSelector, useDispatch } from "react-redux";
-import { userLogin } from "../redux/slices/user";
+import { userLoginActionCreator } from "../redux/slices/user";
 
 export default function Login() {
-  const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
-
+  const userInfo = useSelector((state) => state.userInfo);
   //const { state, dispatch } = useContext(Store);
   //const { userInfo } = state;
 
@@ -52,7 +52,7 @@ export default function Login() {
       // });
       // dispatch({ type: "USER_LOGIN", payload: data });
 
-      dispatch(userLogin({ email, password }));
+      dispatch(userLoginActionCreator({ email, password }));
       router.push(redirect || "/");
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: "error" });

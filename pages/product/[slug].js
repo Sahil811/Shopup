@@ -21,7 +21,7 @@ import Product from "../../models/product";
 import axios from "axios";
 import { getError } from "../../utils/error";
 import { useSnackbar } from "notistack";
-import { addCartActionCreator } from "../redux/slices/cart";
+import { addCartActionCreator } from "../../redux/slices/cart";
 import { useSelector, useDispatch } from "react-redux";
 // import React, { useContext, useEffect, useState } from "react";
 // import { Store } from "../../utils/store";
@@ -30,6 +30,8 @@ import { useSelector, useDispatch } from "react-redux";
 export default function ProductScreen(props) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
+  const { userInfo } = state;
 
   // const { state, dispatch } = useContext(Store);
   // const { userInfo } = state;
@@ -107,13 +109,13 @@ export default function ProductScreen(props) {
       <div className={classes.section}>
         <h1>{product.name}</h1>
         <p>{product.description}</p>
-        <p>
+        <>
           <NextLink href="/">
             <Link>
               <Typography>Back to products</Typography>
             </Link>
           </NextLink>
-        </p>
+        </>
       </div>
 
       <Grid container spacing={1}>

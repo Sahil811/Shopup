@@ -6,16 +6,20 @@ import {
   Button,
   Link,
 } from "@material-ui/core";
-import axios from "axios";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import Layout from "../components/Layout";
-import { Store } from "../utils/store";
 import useStyles from "../utils/styles";
-import Cookies from "js-cookie";
 import { Controller, useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
+// import axios from "axios";
+// import { Store } from "../utils/store";
+// import React, { useContext, useEffect } from "react";
+
+/// Redux Toolkit ///
+import { useSelector, useDispatch } from "react-redux";
+import { userRegisterActionCreator } from "../redux/slices/user";
 
 export default function Register() {
   const {
@@ -26,8 +30,12 @@ export default function Register() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const router = useRouter();
   const { redirect } = router.query;
-  const { state, dispatch } = useContext(Store);
-  const { userInfo } = state;
+
+  const userInfo = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
+  // const { state, dispatch } = useContext(Store);
+  // const { userInfo } = state;
+
   useEffect(() => {
     if (userInfo) {
       router.push("/");
@@ -42,13 +50,13 @@ export default function Register() {
       return;
     }
     try {
-      const { data } = await axios.post("/api/users/register", {
-        name,
-        email,
-        password,
-      });
-      dispatch({ type: "USER_LOGIN", payload: data });
-      Cookies.set("userInfo", data);
+      // const { data } = await axios.post("/api/users/register", {
+      //   name,
+      //   email,
+      //   password,
+      // });
+      // dispatch({ type: "USER_LOGIN", payload: data });
+      dispatch(userRegisterActionCreator({ name, email, password }));
       router.push(redirect || "/");
     } catch (err) {
       enqueueSnackbar(

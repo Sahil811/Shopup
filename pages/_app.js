@@ -20,11 +20,11 @@ function MyApp({ Component, pageProps }) {
     <SnackbarProvider anchorOrigin={{ vertical: "top", horizontal: "center" }}>
       <Provider store={store}>
         {/* TypeError: Cannot read property 'getState' of undefined if Provider is at root not SnakbarProvider*/}
-        <StoreProvider>
-          <PayPalScriptProvider deferLoading={true}>
-            <Component {...pageProps} />
-          </PayPalScriptProvider>
-        </StoreProvider>
+        {/* <StoreProvider> */}
+        <PayPalScriptProvider deferLoading={true}>
+          <Component {...pageProps} />
+        </PayPalScriptProvider>
+        {/* </StoreProvider> */}
       </Provider>
     </SnackbarProvider>
   );
