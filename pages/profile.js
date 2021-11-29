@@ -1,8 +1,7 @@
-import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import {
   Grid,
   List,
@@ -16,12 +15,21 @@ import {
 import Layout from "../components/Layout";
 import useStyles from "../utils/styles";
 import { getError } from "../utils/error";
-import { Store } from "../utils/store";
 import { Controller, useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
+// import axios from "axios";
+// import { Store } from "../utils/store";
+// import React, { useEffect, useContext } from "react";
+
+/// Redux Toolkit ///
+import { useSelector, useDispatch } from "react-redux";
+import { userProfileUpdateActionCreator } from "../redux/slices/user";
 
 const Profile = () => {
-  const { state, dispatch } = useContext(Store);
+  const userInfo = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
+  // const { state, dispatch } = useContext(Store);
+  // const { userInfo } = state;
 
   const {
     handleSubmit,
@@ -34,14 +42,13 @@ const Profile = () => {
 
   const router = useRouter();
   const classes = useStyles();
-  const { userInfo } = state;
 
   useEffect(() => {
     if (!userInfo) {
       return router.push("/login");
     }
-    setValue("name", userInfo.name);
-    setValue("email", userInfo.email);
+    setValue("name", userInfo?.user?.name);
+    setValue("email", userInfo?.user?.email);
   }, []);
 
   const submitHandler = async ({ name, email, password, confirmPassword }) => {
@@ -51,17 +58,17 @@ const Profile = () => {
       return;
     }
     try {
-      const { data } = await axios.put(
-        "/api/users/profile",
-        {
-          name,
-          email,
-          password,
-        },
-        { headers: { authorization: `Bearer ${userInfo.token}` } }
-      );
-      dispatch({ type: "USER_LOGIN", payload: data });
-
+      // const { data } = await axios.put(
+      //   "/api/users/profile",
+      //   {
+      //     name,
+      //     email,
+      //     password,
+      //   },
+      //   { headers: { authorization: `Bearer ${userInfo.token}` } }
+      // );
+      // dispatch({ type: "USER_LOGIN", payload: data });
+      dispatch(userProfileUpdateActionCreator({ name, email, password }));
       enqueueSnackbar("Profile updated successfully", { variant: "success" });
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: "error" });

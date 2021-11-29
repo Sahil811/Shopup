@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import useStyles from "../utils/styles";
-import { Store } from "../utils/store";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { CircularProgress } from "@material-ui/core";
@@ -13,6 +12,12 @@ import {
   StandaloneSearchBox,
 } from "@react-google-maps/api";
 import { getError } from "../utils/error";
+// import React, { useContext, useEffect, useRef, useState } from "react";
+// import { Store } from "../utils/store";
+
+/// Redux Toolkit ///
+import { useSelector, useDispatch } from "react-redux";
+import { mapLocationActionCreator } from "../redux/slices/cart";
 
 const defaultLocation = { lat: 45.516, lng: -73.5 };
 const libs = ["places"];
@@ -22,8 +27,10 @@ function Map() {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { state, dispatch } = useContext(Store);
-  const { userInfo } = state;
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.userInfo);
+  // const { state, dispatch } = useContext(Store);
+  // const { userInfo } = state;
 
   const [googleApiKey, setGoogleApiKey] = useState("");
 
@@ -95,17 +102,27 @@ function Map() {
   const onConfirm = () => {
     const places = placeRef.current.getPlaces();
     if (places && places.length === 1) {
-      dispatch({
-        type: "SAVE_SHIPPING_ADDRESS_MAP_LOCATION",
-        payload: {
+      // dispatch({
+      //   type: "SAVE_SHIPPING_ADDRESS_MAP_LOCATION",
+      //   payload: {
+      //     lat: location.lat,
+      //     lng: location.lng,
+      //     address: places[0].formatted_address,
+      //     name: places[0].name,
+      //     vicinity: places[0].vicinity,
+      //     googleAddressId: places[0].id,
+      //   },
+      // });
+      dispatch(
+        mapLocationActionCreator({
           lat: location.lat,
           lng: location.lng,
           address: places[0].formatted_address,
           name: places[0].name,
           vicinity: places[0].vicinity,
           googleAddressId: places[0].id,
-        },
-      });
+        })
+      );
       enqueueSnackbar("location selected successfully", {
         variant: "success",
       });

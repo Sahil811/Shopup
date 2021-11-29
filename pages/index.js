@@ -4,10 +4,12 @@ import Layout from "../components/Layout.js";
 import db from "../utils/db.js";
 import Product from "../models/product.js";
 import axios from "axios";
-import { Store } from "../utils/store";
-import { useContext } from "react";
 import { useRouter } from "next/router";
 import ProductItem from "../components/ProductItem";
+import { addCartActionCreator } from "../redux/slices/cart";
+import { useDispatch, useSelector } from "react-redux";
+// import { Store } from "../utils/store";
+// import { useContext } from "react";
 
 /// To fix window not defined error in " Carousel"
 import dynamic from "next/dynamic";
@@ -20,7 +22,11 @@ import useStyles from "../utils/styles";
 export default function Home(props) {
   const classes = useStyles();
   const router = useRouter();
-  const { state, dispatch } = useContext(Store);
+
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+
+  // const { state, dispatch } = useContext(Store)
   const { topRatedProducts, featuredProducts } = props;
 
   const addToCartHandler = async (product) => {
@@ -33,7 +39,8 @@ export default function Home(props) {
       return;
     }
 
-    dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
+    // dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
+    dispatch(addCartActionCreator({ ...product, quantity }));
 
     router.push("/cart");
   };

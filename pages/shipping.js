@@ -6,12 +6,17 @@ import {
   Button,
 } from "@material-ui/core";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import Layout from "../components/Layout";
-import { Store } from "../utils/store";
 import useStyles from "../utils/styles";
 import { Controller, useForm } from "react-hook-form";
 import CheckoutWizard from "../components/CheckoutWizard";
+// import { Store } from "../utils/store";
+// import React, { useContext, useEffect } from "react";
+
+/// Redux Toolkit ///
+import { useSelector, useDispatch } from "react-redux";
+import { locationActionCreator } from "../redux/slices/cart";
 
 export default function Shipping() {
   const {
@@ -22,13 +27,18 @@ export default function Shipping() {
     getValues,
   } = useForm();
   const router = useRouter();
-  const { state, dispatch } = useContext(Store);
-  const {
-    userInfo,
-    cart: { shippingAddress },
-  } = state;
 
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.userInfo);
+  const cart = useSelector((state) => state.cart);
+  const { shippingAddress } = cart;
   const { location } = shippingAddress;
+  // const { state, dispatch } = useContext(Store);
+  // const {
+  //   userInfo,
+  //   cart: { shippingAddress },
+  // } = state;
+  // const { location } = shippingAddress;
 
   useEffect(() => {
     if (!userInfo) {
@@ -43,10 +53,20 @@ export default function Shipping() {
 
   const classes = useStyles();
   const submitHandler = ({ fullName, address, city, postalCode, country }) => {
-    dispatch({
-      type: "SAVE_SHIPPING_ADDRESS",
-      payload: { fullName, address, city, postalCode, country, location },
-    });
+    // dispatch({
+    //   type: "SAVE_SHIPPING_ADDRESS",
+    //   payload: { fullName, address, city, postalCode, country, location },
+    // });
+    dispatch(
+      locationActionCreator({
+        fullName,
+        address,
+        city,
+        postalCode,
+        country,
+        location,
+      })
+    );
     router.push("/payment");
   };
 
@@ -56,10 +76,19 @@ export default function Shipping() {
     const city = getValues("city");
     const postalCode = getValues("postalCode");
     const country = getValues("country");
-    dispatch({
-      type: "SAVE_SHIPPING_ADDRESS",
-      payload: { fullName, address, city, postalCode, country },
-    });
+    // dispatch({
+    //   type: "SAVE_SHIPPING_ADDRESS",
+    //   payload: { fullName, address, city, postalCode, country },
+    // });
+    dispatch(
+      locationActionCreator({
+        fullName,
+        address,
+        city,
+        postalCode,
+        country,
+      })
+    );
     router.push("/map");
   };
 

@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Layout from "../components/Layout";
-import { Store } from "../utils/store";
 import NextLink from "next/link";
 import Image from "next/image";
 import {
@@ -25,15 +24,25 @@ import { useRouter } from "next/router";
 import useStyles from "../utils/styles";
 import { useSnackbar } from "notistack";
 import { getError } from "../utils/error";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCartActionCreator } from "../redux/slices/cart";
+// import { Store } from "../utils/store";
+// import React, { useContext, useEffect, useState } from "react";
 
 function PlaceOrder() {
   const classes = useStyles();
   const router = useRouter();
-  const { state, dispatch } = useContext(Store);
-  const {
-    userInfo,
-    cart: { cartItems, shippingAddress, paymentMethod },
-  } = state;
+
+  const userInfo = useSelector((state) => state.userInfo);
+  const cart = useSelector((state) => state.cart);
+  const { cartItems, shippingAddress, paymentMethod } = cart;
+  const dispatch = useDispatch();
+  // const { state, dispatch } = useContext(Store);
+  // const {
+  //   userInfo,
+  //   cart: { cartItems, shippingAddress, paymentMethod },
+  // } = state;
+
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.456 => 123.46
   const itemsPrice = round2(
     cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
@@ -47,7 +56,7 @@ function PlaceOrder() {
       router.push("/payment");
     }
 
-    if (cartItems.length === 0) {
+    if (cartItems && cartItems.length === 0) {
       router.push("/cart");
     }
   }, []);
@@ -75,7 +84,8 @@ function PlaceOrder() {
           },
         }
       );
-      dispatch({ type: "CART_CLEAR" });
+      // dispatch({ type: "CART_CLEAR" });
+      dispatch(clearCartActionCreator());
       setLoading(false);
       router.push(`/order/${data._id}`);
     } catch (err) {
